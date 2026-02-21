@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <title>Locatie kiezen</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: system-ui, sans-serif; padding: 20px; }
+    .card { border: 1px solid #ccc; border-radius: 8px; padding: 16px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Locatie geselecteerd</h1>
+    <p id="naam">Bezig met laden...</p>
+    <p>Ga nu naar het <strong>controlepunt</strong> om te zien hoeveel er goed zijn.</p>
+  </div>
+
+  <script>
+    function getParam(name) {
+      const params = new URLSearchParams(window.location.search);
+      return params.get(name);
+    }
+
+    const locatieId = getParam("id");
+    const naamElement = document.getElementById("naam");
+
+    if (!locatieId) {
+      naamElement.textContent = "Geen locatie-id gevonden in de URL.";
+    } else {
+      localStorage.setItem("locatie", locatieId);
+      naamElement.textContent = "Je hebt de locatie gekozen: " + locatieId;
+    }
+  </script>
+</body>
+</html>

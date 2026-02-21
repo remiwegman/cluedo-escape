@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <title>Wapen kiezen</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: system-ui, sans-serif; padding: 20px; }
+    .card { border: 1px solid #ccc; border-radius: 8px; padding: 16px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Wapen geselecteerd</h1>
+    <p id="naam">Bezig met laden...</p>
+    <p>Ga nu verder met het kiezen van een <strong>persoon</strong> en een <strong>locatie</strong>.</p>
+  </div>
+
+  <script>
+    function getParam(name) {
+      const params = new URLSearchParams(window.location.search);
+      return params.get(name);
+    }
+
+    const wapenId = getParam("id");
+    const naamElement = document.getElementById("naam");
+
+    if (!wapenId) {
+      naamElement.textContent = "Geen wapen-id gevonden in de URL.";
+    } else {
+      localStorage.setItem("wapen", wapenId);
+      naamElement.textContent = "Je hebt het wapen gekozen: " + wapenId;
+    }
+  </script>
+</body>
+</html>

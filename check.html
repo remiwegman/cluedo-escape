@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <title>Combinatie controleren</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: system-ui, sans-serif; padding: 20px; }
+    .card { border: 1px solid #ccc; border-radius: 8px; padding: 16px; max-width: 480px; }
+    .score { font-size: 2rem; font-weight: bold; margin: 12px 0; }
+    .ok { color: green; }
+    .warn { color: #c77f00; }
+    .bad { color: #b00020; }
+    .small { font-size: 0.9rem; color: #555; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Controlepunt</h1>
+    <p>Dit is het resultaat van jullie huidige combinatie:</p>
+
+    <p><strong>Gekozen wapen:</strong> <span id="gekozen-wapen">-</span></p>
+    <p><strong>Gekozen persoon:</strong> <span id="gekozen-persoon">-</span></p>
+    <p><strong>Gekozen locatie:</strong> <span id="gekozen-locatie">-</span></p>
+
+    <div class="score" id="score"></div>
+    <p id="uitleg"></p>
+    <p class="small">Pas één of meer keuzes aan door opnieuw een wapen, persoon of locatie te scannen en kom dan terug naar dit controlepunt.</p>
+  </div>
+
+  <script>
+    // >>> HIER DE JUISTE COMBINATIE INVULLEN <<<
+    const juistWapen = "touw";
+    const juistePersoon = "sophie";
+    const juisteLocatie = "archiefkamer";
+
+    const gekozenWapen = localStorage.getItem("wapen");
+    const gekozenPersoon = localStorage.getItem("persoon");
+    const gekozenLocatie = localStorage.getItem("locatie");
+
+    document.getElementById("gekozen-wapen").textContent = gekozenWapen || "(nog niet gekozen)";
+    document.getElementById("gekozen-persoon").textContent = gekozenPersoon || "(nog niet gekozen)";
+    document.getElementById("gekozen-locatie").textContent = gekozenLocatie || "(nog niet gekozen)";
+
+    let score = 0;
+    if (gekozenWapen && gekozenWapen === juistWapen) score++;
+    if (gekozenPersoon && gekozenPersoon === juistePersoon) score++;
+    if (gekozenLocatie && gekozenLocatie === juisteLocatie) score++;
+
+    const scoreEl = document.getElementById("score");
+    const uitlegEl = document.getElementById("uitleg");
+
+    if (!gekozenWapen || !gekozenPersoon || !gekozenLocatie) {
+      scoreEl.textContent = "Combinatie onvolledig";
+      scoreEl.classList.add("warn");
+      uitlegEl.textContent = "Zorg dat je een wapen, een persoon én een locatie hebt gescand voordat je controleert.";
+    } else {
+      scoreEl.textContent = score + " goed";
+      if (score === 0) {
+        scoreEl.classList.add("bad");
+        uitlegEl.textContent = "Niets van deze combinatie klopt. Tijd om opnieuw te denken!";
+      } else if (score === 1) {
+        scoreEl.classList.add("warn");
+        uitlegEl.textContent = "Eén element is juist, maar twee zijn fout. Jullie zijn op de goede weg.";
+      } else if (score === 2) {
+        scoreEl.classList.add("warn");
+        uitlegEl.textContent = "Twee elementen zijn juist. De oplossing is dichtbij!";
+      } else if (score === 3) {
+        scoreEl.classList.add("ok");
+        uitlegEl.textContent = "Alle drie zijn goed! De zaak is opgelost.";
+      }
+    }
+  </script>
+</body>
+</html>
